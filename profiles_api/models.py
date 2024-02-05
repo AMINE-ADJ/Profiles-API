@@ -8,13 +8,14 @@ class UserProfileManager(BaseUserManager):
     """Manage the customized userPofile class so that "django (cli)" can use its functions to interact with our Customized class..create user..ect"""
      
     def create_user(self, email, name, password=None):
-        """Create a new user profile """
+        """Create a new user profile ( with hashs as passwords instead of plain text like in the default behavior.. ) """
         if not email : 
             raise ValueError('Users must ve email address')
         
         email = self.normalize_email(email)
         user = self.model(email=email, name = name)
 
+        #here is the key, setting the password with this function will store it as a hash instead of plain text..
         user.set_password(password)
         user.save(using=self._db)
 
