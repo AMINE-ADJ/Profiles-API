@@ -3,7 +3,7 @@ from  django.contrib.auth.models import AbstractBaseUser
 from  django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
-
+from profiles_project import settings
 class UserProfileManager(BaseUserManager):
     """Manage the customized userPofile class so that "django (cli)" can use its functions to interact with our Customized class..create user..ect"""
      
@@ -53,5 +53,24 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.name
     
     def __str__(self):
-        """Return the string representation of our UserProfile object, recommended for all django models"""
+        """Return the string representation of our UserProfile object, recommended for all django models, to tell python what to do when we convert model instance to a string"""
         return self.email 
+    
+
+
+
+class ProfileFeedItem(models.Model):
+    """Profile status update"""
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete = models.CASCADE,
+    )
+    status_text = models.CharField(max_length=255)
+    created_on=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """Return a model as a string"""
+        return self.status_text
+    
+
+    
